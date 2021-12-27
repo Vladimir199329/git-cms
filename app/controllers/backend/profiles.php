@@ -790,6 +790,117 @@ if ($mode === 'get_manager_list') {
     Tygh::$app['ajax']->assign('total_objects', isset($params['total_items']) ? $params['total_items'] : count($objects));
 
     return[CONTROLLER_STATUS_NO_CONTENT];
-} elseif ($mode == 'add_departament' || $mode == 'update_departament') {
-    fn_print_die('end');
+}elseif ($mode == 'add_departament' || $mode == 'update_departament') {
+    
+    $departament_id = !empty($_REQUEST['departament_id']) ? $_REQUEST['departament_id'] : 0;
+    $departament_data = fn_get_departament_data($departament_id , DESCR_SL);
+    //fn_print_die($departament_data);
+    if (empty($departament_data) && $mode == 'update') {
+        return [CONTROLLER_STATUS_NO_PAGE];
+    }
+
+    Tygh::$app['view']->assign('departament_data', $departament_data);
+    
+    //fn_print_die('end');
+} elseif ($mode == 'manage_departaments') {
+    //fn_print_die('end');
+    list($departaments, $search) = fn_get_departaments($_REQUEST, Registry::get('settings.Appearance.admin_elements_per_page'), DESCR_SL);
+    //fn_print_die($departaments);
+    $page = $search['page'];
+    $valid_page = db_get_valid_page($page, $search['items_per_page'], $search['total_items']);
+
+
+    Tygh::$app['view']->assign('departaments', $departaments);
+    Tygh::$app['view']->assign('search', $search);
+    
+}
+   
+function fn_get_departament_data($departament_id = 0, $lang_code = CART_LANGUAGE) 
+{
+    $departament = [];
+    if (!empty($departament_id)){
+        list($departaments) = fn_get_departaments([
+            'departament_id' => $departament_id
+        ], 1, $lang_code);
+        $departament = !empty($departaments) ? reset($departaments) : [];
+    }
+    return $departament;
+}
+
+function fn_get_departaments($params = [], $items_per_page = 0, $lang_code = CART_LANGUAGE) 
+{
+   // Set default values to input params
+   $default_params = array(
+    'page' => 1,
+    'items_per_page' => $items_per_page
+);
+
+$params = array_merge($default_params, $params);
+
+if (AREA == 'C') {
+    $params['status'] = 'A';
+}
+
+$sortings = array(
+    'timestamp' => '?:departaments.timestamp',
+    'name' => '?:departaments_descriptions.departament',
+    'status' => '?:departaments.status',
+    'description' => '?:departaments_descriptions.description',
+);
+
+$condition = $limit = $join = '';
+
+if (!empty($params['limit'])) {
+    $limit = db_quote(' LIMIT 0, ?i', $params['limit']);
+}
+
+$sorting = db_sort($params, $sortings, 'name', 'asc');
+
+if (!empty($params['item_ids'])) {
+    $condition .= db_quote(' AND ?:departaments.departament_id IN (?n)', explode(',', $params['item_ids']));
+}
+
+if (!empty($params['departament_id'])) {
+    $condition .= db_quote(' AND ?:departaments.departament_id = ?i', $params['departament_id']);
+}
+
+if (!empty($params['status'])) {
+    $condition .= db_quote(' AND ?:departaments.status = ?s', $params['status']);
+}
+
+
+
+$fields = array (
+    '?:departaments.departament_id',
+    '?:departaments.status',
+    '?:departaments.timestamp',
+    '?:departaments_descriptions.departament',
+    '?:departaments_descriptions.description',
+);
+
+
+$join .= db_quote(' LEFT JOIN ?:departaments_descriptions ON ?:departaments_descriptions.departament_id = ?:departaments.departament_id AND ?:departaments_descriptions.lang_code = ?s', $lang_code);
+
+if (!empty($params['items_per_page'])) {
+    $params['total_items'] = db_get_field("SELECT COUNT(*) FROM ?:departaments $join WHERE 1 $condition");
+    $limit = db_paginate($params['page'], $params['items_per_page'], $params['total_items']);
+}
+
+$descriptions = db_get_hash_array(
+    "SELECT ?p FROM ?:departaments " .
+    $join .
+    "WHERE 1 ?p ?p ?p",
+    'departament_id', implode(', ', $fields), $condition, $sorting, $limit
+);
+
+
+
+//$banner_image_ids = array_column($banners, 'banner_image_id');
+//$images = fn_get_image_pairs($banner_image_ids, 'promo', 'M', true, false, $lang_code);
+
+//foreach ($descriptions as $departament_id => $description) {
+//    $banners[$departament_id]['main_pair'] = !empty($images[$banner['banner_image_id']]) ? reset($images[$banner['banner_image_id']]) : array();
+//}
+
+return array($descriptions, $params);
 }
