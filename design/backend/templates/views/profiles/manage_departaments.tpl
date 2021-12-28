@@ -4,15 +4,15 @@
 
 <form action="{""|fn_url}" method="post" id="departaments_form" name="departaments_form" enctype="multipart/form-data">
 <input type="hidden" name="fake" value="1" />
-{include file="common/pagination.tpl" save_current_page=true save_current_url=true div_id="pagination_contents_departament"}
+{include file="common/pagination.tpl" save_current_page=true save_current_url=true div_id="pagination_contents_departaments"}
 
 {$c_url=$config.current_url|fn_query_remove:"sort_by":"sort_order"}
 
-{$rev=$smarty.request.content_id|default:"pagination_contents_departament"}
+{$rev=$smarty.request.content_id|default:"pagination_contents_departaments"}
 {include_ext file="common/icon.tpl" class="icon-`$search.sort_order_rev`" assign=c_icon}
 {include_ext file="common/icon.tpl" class="icon-dummy" assign=c_dummy}
 {$departaments_statuses=""|fn_get_default_statuses:true}
-{$has_permission = fn_check_permissions("departament", "update_status", "admin", "POST")}
+{$has_permission = fn_check_permissions("departaments", "update_status", "admin", "POST")}
 
 {if $departaments}
     {capture name="departament_table"}
