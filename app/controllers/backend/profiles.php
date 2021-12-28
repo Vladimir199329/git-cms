@@ -825,7 +825,7 @@ if ($mode === 'get_manager_list') {
     ]);
     
     //fn_print_die('end');
-} elseif ($mode == 'manage_departaments') {
+} elseif ($mode === 'manage_departaments') {
     //fn_print_die('end');
     list($departaments, $search) = fn_get_departaments($_REQUEST, Registry::get('settings.Appearance.admin_elements_per_page'), DESCR_SL);
     //fn_print_die($departaments);
