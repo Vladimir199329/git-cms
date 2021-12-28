@@ -40,8 +40,8 @@
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label" for="elm_departament_timestamp_{$id}">{__("creation_date")}</label>
+        <div class="control-group cm-hide-inputs" >
+            <label class="control-label"  for="elm_departament_timestamp_{$id}">{__("creation_date")}</label>
             <div class="controls">
             {include file="common/calendar.tpl" date_id="elm_departament_timestamp_`$id`" date_name="departament_data[timestamp]" date_val=$departament_data.timestamp|default:$smarty.const.TIME start_year=$settings.Company.company_start_year}
             </div>

@@ -901,7 +901,6 @@ $fields = array (
     '?:departaments_descriptions.description',
 );
 
-
 $join .= db_quote(' LEFT JOIN ?:departaments_descriptions ON ?:departaments_descriptions.departament_id = ?:departaments.departament_id AND ?:departaments_descriptions.lang_code = ?s', $lang_code);
 
 if (!empty($params['items_per_page'])) {
@@ -953,4 +952,4 @@ function fn_update_departament($data, $departament_id, $lang_code = DESCR_SL)
         fn_attach_image_pairs('departament_main', 'departament', $departament_id, $lang_code);
     }
     return $departament_id;
-}
+} 

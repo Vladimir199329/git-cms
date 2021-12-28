@@ -11,7 +11,7 @@
 {$rev=$smarty.request.content_id|default:"pagination_contents_departament"}
 {include_ext file="common/icon.tpl" class="icon-`$search.sort_order_rev`" assign=c_icon}
 {include_ext file="common/icon.tpl" class="icon-dummy" assign=c_dummy}
-{$departament_statuses=""|fn_get_default_statuses:true}
+{$departaments_statuses=""|fn_get_default_statuses:true}
 {$has_permission = fn_check_permissions("departament", "update_status", "admin", "POST")}
 
 {if $departaments}
@@ -22,7 +22,7 @@
             <tr>
                 <th width="6%" class="left mobile-hide">
                     {include file="common/check_items.tpl" 
-                    is_check_disabled=!$has_permission check_statuses=($has_permission) ? $departament_statuses : '' }
+                    is_check_disabled=!$has_permission check_statuses=($has_permission) ? $departaments_statuses : '' }
 
                     <input type="checkbox"
                         class="bulkedit-toggler hide"
@@ -31,18 +31,18 @@
                     />
                 </th>
                 <th  width="6%"></th>
-                <th  width="15%"><a class="cm-ajax" href="{"`$c_url`&sort_by=name&sort_order=`$search.sort_order_rev`"|fn_url}" 
+                <th  width="15%"><a class="cm-noajax" href="{"`$c_url`&sort_by=name&sort_order=`$search.sort_order_rev`"|fn_url}" 
                 data-ca-target-id={$rev}>{__("name")}{if $search.sort_by === "name"}{$c_icon nofilter}{else}{$c_dummy nofilter}{/if}</a>
                 </th>
                 <th width="15%">{__("description")}</th></a>
 
-                <th width="15%"><a class="cm-ajax" href="{"`$c_url`&sort_by=timestamp&sort_order=`$search.sort_order_rev`"|fn_url}" 
+                <th width="15%"><a class="cm-noajax" href="{"`$c_url`&sort_by=timestamp&sort_order=`$search.sort_order_rev`"|fn_url}" 
                 data-ca-target-id={$rev}>{__("creation_date")}{if $search.sort_by === "timestamp"}{$c_icon nofilter}{else}{$c_dummy nofilter}{/if}</a>
                 </th>
 
             
                 <th width="6%" class="mobile-hide">&nbsp;</th>
-                <th width="10%" class="right"><a class="cm-ajax" href="{"`$c_url`&sort_by=status&sort_order=`$search.sort_order_rev`"|fn_url}" 
+                <th width="10%" class="right"><a class="cm-noajax" href="{"`$c_url`&sort_by=status&sort_order=`$search.sort_order_rev`"|fn_url}" 
                 data-ca-target-id={$rev}>{__("status")}{if $search.sort_by === "status"}{$c_icon nofilter}{else}{$c_dummy nofilter}{/if}</a>
                 </th>
             </tr>
@@ -94,8 +94,6 @@
                 <td width="15%" data-th="{__("creation_date")}">
                     {$departament.timestamp|date_format:"`$settings.Appearance.date_format`, `$settings.Appearance.time_format`"}
                 </td>
-
-                
 
                 <td width="6%" class="mobile-hide">
                     {capture name="tools_list"}
