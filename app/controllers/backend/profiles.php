@@ -21,6 +21,7 @@ use Tygh\Enum\YesNo;
 use Tygh\Registry;
 use Tygh\Tools\Url;
 use Tygh\Tygh;
+use Tygh\Languages\Languages;
 
 defined('BOOTSTRAP') or die('Access denied');
 
@@ -36,6 +37,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         return array(CONTROLLER_STATUS_OK, 'profiles.manage' . (isset($_REQUEST['user_type']) ? '?user_type=' . $_REQUEST['user_type'] : '' ));
     }
+
+    fn_trusted_vars(
+        'departament_data'
+    );
 
     if ($mode === 'export_range') {
         if (!empty($_REQUEST['user_ids'])) {
@@ -55,7 +60,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             return array(CONTROLLER_STATUS_REDIRECT, 'exim.export?section=users&pattern_id=' . Tygh::$app['session']['export_ranges']['users']['pattern_id']);
         }
     }
-
+    if ($mode == 'update_departament') {
+        $departament_id = !empty($_REQUEST['departament_id']) ? $_REQUEST['departament_id'] : 0;
+        $data = !empty($_REQUEST['departament_data']) ? $_REQUEST['departament_data'] : 0;
+        $departament_id = fn_update_departament($data, $departament_id);
+        if (!empty($departament_id)) {
+            $suffix = ".update_departament?departament_id={$departament_id}";
+        } else {
+            $suffix = ".add_departament";
+        }
+        //fn_print_die($_REQUEST);
+    } elseif ($mode == 'delete_departament') {
+        fn_print_die($_REQUEST);
+    } elseif ($mode == 'delete_departaments') {
+        fn_print_die($_REQUEST);
+    }
     //
     // Create/Update user
     //
@@ -799,7 +818,11 @@ if ($mode === 'get_manager_list') {
         return [CONTROLLER_STATUS_NO_PAGE];
     }
 
-    Tygh::$app['view']->assign('departament_data', $departament_data);
+    Tygh::$app['view']->assign([
+        'departament_data'=> $departament_data,
+        'user_info' => !empty($departament_data['user_id']) ? fn_get_user_short_info($departament_data['user_id']) : 0,
+    
+    ]);
     
     //fn_print_die('end');
 } elseif ($mode == 'manage_departaments') {
@@ -845,7 +868,7 @@ $sortings = array(
     'timestamp' => '?:departaments.timestamp',
     'name' => '?:departaments_descriptions.departament',
     'status' => '?:departaments.status',
-    'description' => '?:departaments_descriptions.description',
+    
 );
 
 $condition = $limit = $join = '';
@@ -886,7 +909,7 @@ if (!empty($params['items_per_page'])) {
     $limit = db_paginate($params['page'], $params['items_per_page'], $params['total_items']);
 }
 
-$descriptions = db_get_hash_array(
+$departaments = db_get_hash_array(
     "SELECT ?p FROM ?:departaments " .
     $join .
     "WHERE 1 ?p ?p ?p",
@@ -895,12 +918,39 @@ $descriptions = db_get_hash_array(
 
 
 
-//$banner_image_ids = array_column($banners, 'banner_image_id');
-//$images = fn_get_image_pairs($banner_image_ids, 'promo', 'M', true, false, $lang_code);
+$departament_image_ids = array_keys($departaments);
+$images = fn_get_image_pairs($departament_image_ids, 'departament', 'M', true, false, $lang_code);
 
-//foreach ($descriptions as $departament_id => $description) {
-//    $banners[$departament_id]['main_pair'] = !empty($images[$banner['banner_image_id']]) ? reset($images[$banner['banner_image_id']]) : array();
-//}
+foreach ($departaments as $departament_id => $departament) {
+    $departaments[$departament_id]['main_pair'] = !empty($images[$departament_id]) ? reset($images[$departament_id]) : array();
+}
 
-return array($descriptions, $params);
+return array($departaments, $params);
+}
+
+function fn_update_departament($data, $departament_id, $lang_code = DESCR_SL)
+{
+
+    if (isset($data['timestamp'])) {
+        $data['timestamp'] = fn_parse_date($data['timestamp']);
+    }
+
+    if (!empty($departament_id)) {
+        db_query("UPDATE ?:departaments SET ?u WHERE departament_id = ?i", $data, $departament_id);
+        db_query("UPDATE ?:departaments_descriptions SET ?u WHERE departament_id = ?i AND lang_code = ?s", $data, $departament_id, $lang_code);
+
+
+      
+
+    } else {
+        $departament_id = $data['departament_id'] = db_replace_into('departaments', $data);
+
+        foreach (Languages::getAll() as $data['lang_code'] => $v) {
+            db_query("REPLACE INTO ?:departaments_descriptions ?e", $data);
+        }
+
+    } if (!empty($departament_id)) {
+        fn_attach_image_pairs('departament_main', 'departament', $departament_id, $lang_code);
+    }
+    return $departament_id;
 }
