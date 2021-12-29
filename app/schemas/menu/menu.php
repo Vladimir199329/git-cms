@@ -520,6 +520,11 @@ $schema = [
                     'href' => 'usergroups.manage',
                     'position' => 800,
                 ],
+                'departaments' => [
+                    'href' => 'departaments.manage_departaments',
+                    'alt' => 'departaments.update_departament',
+                    'position' => 300,
+                ],
             ],
             'position' => 300,
         ],
