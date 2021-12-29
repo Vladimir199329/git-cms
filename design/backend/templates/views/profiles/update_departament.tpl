@@ -47,7 +47,7 @@
             </div>
         </div>
 
-        {include file="common/select_status.tpl" input_name="departament_data[status]" id="elm_banner_status" obj_id=$id obj=$departament_data hidden=false}
+        {include file="common/select_status.tpl" input_name="departament_data[status]" id="elm_departament_status" obj_id=$id obj=$departament_data hidden=false}
 
         <div class="control-group">
             <label class="control-label">{__("users")}</label>

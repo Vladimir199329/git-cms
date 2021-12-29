@@ -86,10 +86,11 @@
                 
                 <td class="{$no_hide_input}" data-th="{__("name")}">
                     <a class="row-status" href="{"profiles.update_departament?departament_id=`$departament.departament_id`"|fn_url}">{$departament.departament}</a>
-                    {include file="views/companies/components/company_name.tpl" object=$departament}
+                    
                 </td>
                 <td width="15%">
-                   <text class="row-status">{$departament.description}</text>
+                   {$departament.description|strip_tags}
+
                 </td>
                 <td width="15%" data-th="{__("creation_date")}">
                     {$departament.timestamp|date_format:"`$settings.Appearance.date_format`, `$settings.Appearance.time_format`"}
@@ -102,8 +103,9 @@
                         </li>
                     {if $allow_save}
                         <li>{btn type="list" class="cm-confirm" text=__("delete") 
-                        href="profiles.delete?departament_id=`$departament.departament_id`" 
-                        method="POST"}</li>
+                        href="profiles.delete_departament?departament_id=`$departament.departament_id`" 
+                        method="POST"}
+                        </li>
                     {/if}
                     {/capture}
                     <div class="hidden-tools">
@@ -145,7 +147,7 @@
 </form>
 
 
-{hook name="banners:manage_mainbox_params"}
+{hook name="departament:manage_mainbox_params"}
     {$page_title = __("departaments")}
     {$select_languages = true}
 {/hook}

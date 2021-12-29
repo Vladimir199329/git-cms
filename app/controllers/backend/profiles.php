@@ -71,7 +71,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         //fn_print_die($_REQUEST);
     } elseif ($mode == 'delete_departament') {
-        fn_print_die($_REQUEST);
+        $departament_id = !empty($_REQUEST['departament_id']) ? $_REQUEST['departament_id'] : 0;
+        fn_delete_departament($departament_id);
+        return array(CONTROLLER_STATUS_REDIRECT, $suffix = "profiles.manage_departaments");
+        
+        //fn_print_die($_REQUEST);
     } elseif ($mode == 'delete_departaments') {
         fn_print_die($_REQUEST);
     }
@@ -953,3 +957,12 @@ function fn_update_departament($data, $departament_id, $lang_code = DESCR_SL)
     }
     return $departament_id;
 } 
+function fn_delete_departament($departament_id)
+{
+
+    if (!empty($departament_id)) {
+        $res = db_query("DELETE FROM ?:departaments WHERE departament_id = ?i", $departament_id);
+        db_query("DELETE FROM ?:departaments_descriptions WHERE departament_id = ?i", $departament_id);
+        
+    }
+}
