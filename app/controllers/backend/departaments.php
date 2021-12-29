@@ -12,32 +12,41 @@
 * "copyright.txt" FILE PROVIDED WITH THIS DISTRIBUTION PACKAGE.            *
 ****************************************************************************/
 
+
+use Tygh\Tygh;
 use Tygh\Registry;
 use Tygh\Languages\Languages;
 
 defined('BOOTSTRAP') or die('Access denied');
+
+$suffix = '';
+
+fn_trusted_vars(
+    'departament_data'
+);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($mode == 'update_departament') {
         $departament_id = !empty($_REQUEST['departament_id']) ? $_REQUEST['departament_id'] : 0;
         $data = !empty($_REQUEST['departament_data']) ? $_REQUEST['departament_data'] : 0;
         $departament_id = fn_update_departament($data, $departament_id);
+        //fn_print_die($_REQUEST);
         if (!empty($departament_id)) {
-            $suffix = ".update_departament?departament_id={$departament_id}";
+            return array(CONTROLLER_STATUS_OK, "departaments.update_departament?departament_id={$departament_id}");
         } else {
-            $suffix = ".add_departament";
+            return array(CONTROLLER_STATUS_REDIRECT, "departaments.add_departament");
         }
         //fn_print_die($_REQUEST);
-    } elseif ($mode == 'delete_departament') {
+    } elseif ($mode === 'delete_departament') {
         $departament_id = !empty($_REQUEST['departament_id']) ? $_REQUEST['departament_id'] : 0;
         fn_delete_departament($departament_id);
-        return array(CONTROLLER_STATUS_REDIRECT, $suffix = "departaments.manage_departaments");
+        return array(CONTROLLER_STATUS_REDIRECT, "departaments.manage_departaments");
         
         //fn_print_die($_REQUEST);
     } elseif ($mode == 'delete_departaments') {
         fn_print_die($_REQUEST);
     }
-}elseif ($mode == 'add_departament' || $mode == 'update_departament') {
+} elseif ($mode == 'add_departament' || $mode == 'update_departament') {
     
     $departament_id = !empty($_REQUEST['departament_id']) ? $_REQUEST['departament_id'] : 0;
     $departament_data = fn_get_departament_data($departament_id , DESCR_SL);
@@ -119,8 +128,6 @@ if (!empty($params['status'])) {
     $condition .= db_quote(' AND ?:departaments.status = ?s', $params['status']);
 }
 
-
-
 $fields = array (
     '?:departaments.departament_id',
     '?:departaments.status',
@@ -142,8 +149,6 @@ $departaments = db_get_hash_array(
     "WHERE 1 ?p ?p ?p",
     'departament_id', implode(', ', $fields), $condition, $sorting, $limit
 );
-
-
 
 $departament_image_ids = array_keys($departaments);
 $images = fn_get_image_pairs($departament_image_ids, 'departament', 'M', true, false, $lang_code);

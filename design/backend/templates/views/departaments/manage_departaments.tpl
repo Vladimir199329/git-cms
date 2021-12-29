@@ -34,7 +34,7 @@
                 <th  width="15%"><a class="cm-noajax" href="{"`$c_url`&sort_by=name&sort_order=`$search.sort_order_rev`"|fn_url}" 
                 data-ca-target-id={$rev}>{__("name")}{if $search.sort_by === "name"}{$c_icon nofilter}{else}{$c_dummy nofilter}{/if}</a>
                 </th>
-                <th width="15%">{__("description")}</th></a>
+                <th width="15%" data-ca-target-id={$rev}>{__("description")}</th>
 
                 <th width="15%"><a class="cm-noajax" href="{"`$c_url`&sort_by=timestamp&sort_order=`$search.sort_order_rev`"|fn_url}" 
                 data-ca-target-id={$rev}>{__("creation_date")}{if $search.sort_by === "timestamp"}{$c_icon nofilter}{else}{$c_dummy nofilter}{/if}</a>
@@ -84,13 +84,11 @@
                     cm-item-status-{$departament.status|lower} hide" />
                 </td>
                 
-                <td class="{$no_hide_input}" data-th="{__("name")}">
+                <td data-th="{__("name")}">
                     <a class="row-status" href="{"departaments.update_departament?departament_id=`$departament.departament_id`"|fn_url}">{$departament.departament}</a>
-                    
                 </td>
                 <td width="15%">
                    {$departament.description|strip_tags}
-
                 </td>
                 <td width="15%" data-th="{__("creation_date")}">
                     {$departament.timestamp|date_format:"`$settings.Appearance.date_format`, `$settings.Appearance.time_format`"}

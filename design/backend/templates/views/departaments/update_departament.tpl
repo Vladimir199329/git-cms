@@ -63,11 +63,6 @@
     <div id="content_addons" class="hidden clearfix">
     <!--content_addons--></div>
 
-    {hook name="banners:tabs_content"}
-    {/hook}
-
-
-
 {capture name="buttons"}
     {if $id}
         {capture name="tools_list"}
@@ -87,7 +82,7 @@
 {/capture}
 
 {notes}
-    {__("banner_details_notes", ["[layouts_href]" => fn_url('block_manager.manage')])}
+    {__("departament_details_notes", ["[layouts_href]" => fn_url('block_manager.manage')])}
 {/notes}
 
 {include file="common/mainbox.tpl"
