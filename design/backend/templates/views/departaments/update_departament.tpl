@@ -50,12 +50,15 @@
         {include file="common/select_status.tpl" input_name="departament_data[status]" id="elm_departament_status" obj_id=$id obj=$departament_data hidden=false}
 
         <div class="control-group">
-            <label class="control-label">{__("users")}</label>
+            <label class="control-label">{__("director")}</label>
             <div class="controls">
                 {include file="pickers/users/picker.tpl" 
                 but_text=__("add_users") data_id="return_users" 
-                but_meta="btn" input_name="newsletter_data[users]" 
-                item_ids=$newsletter.users placement="right"}
+                but_meta="btn" input_name="departament_data[user_id]" 
+                item_ids=$departament_data.user_id 
+                placement="right"
+                display="radio" view_mode="single_button"
+                user_info=$u_info}
             </div>
         </div>
     <!--content_general--></div>

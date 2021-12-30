@@ -56,10 +56,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     Tygh::$app['view']->assign([
-        'departament_data'=> $departament_data,
-        'user_info' => !empty($departament_data['user_id']) ? fn_get_user_short_info($departament_data['user_id']) : 0,
-    
+        'departament_data' => $departament_data,
+        'u_info' => !empty($departament_data['user_id']) ? fn_get_user_short_info($departament_data['user_id']) : [],
     ]);
+    //fn_print_die($departament_data);
     
     //fn_print_die('end');
 } elseif ($mode === 'manage_departaments') {
@@ -105,7 +105,6 @@ $sortings = array(
     'timestamp' => '?:departaments.timestamp',
     'name' => '?:departaments_descriptions.departament',
     'status' => '?:departaments.status',
-    
 );
 
 $condition = $limit = $join = '';
@@ -131,6 +130,7 @@ if (!empty($params['status'])) {
 $fields = array (
     '?:departaments.departament_id',
     '?:departaments.status',
+    '?:departaments.user_id',
     '?:departaments.timestamp',
     '?:departaments_descriptions.departament',
     '?:departaments_descriptions.description',
