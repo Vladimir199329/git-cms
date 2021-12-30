@@ -24,8 +24,7 @@
                     {include file="common/check_items.tpl" 
                     is_check_disabled=!$has_permission check_statuses=($has_permission) ? $departaments_statuses : '' }
 
-                    <input type="checkbox"
-                        class="bulkedit-toggler hide"
+                    <input type="checkbox" class="bulkedit-toggler hide"
                         data-ca-bulkedit-disable="[data-ca-bulkedit-default-object=true]"
                         data-ca-bulkedit-enable="[data-ca-bulkedit-expanded-object=true]"
                     />
@@ -40,7 +39,6 @@
                 data-ca-target-id={$rev}>{__("creation_date")}{if $search.sort_by === "timestamp"}{$c_icon nofilter}{else}{$c_dummy nofilter}{/if}</a>
                 </th>
 
-            
                 <th width="6%" class="mobile-hide">&nbsp;</th>
                 <th width="10%" class="right"><a class="cm-noajax" href="{"`$c_url`&sort_by=status&sort_order=`$search.sort_order_rev`"|fn_url}" 
                 data-ca-target-id={$rev}>{__("status")}{if $search.sort_by === "status"}{$c_icon nofilter}{else}{$c_dummy nofilter}{/if}</a>
@@ -67,6 +65,10 @@
                 {$image_height = $settings.Thumbnails.product_admin_mini_icon_height}
 
                 <td width="6%" class="left mobile-hide">
+                <input type="checkbox" name="departament_ids[]" value="{$departament.departament_id}" 
+                    class="cm-item {$no_hide_input} 
+                    cm-item-status-{$departament.status|lower} hide" />
+                </td>
                 <td class="products-list__image">
                         {include
                                 file="common/image.tpl"
@@ -79,11 +81,7 @@
                                 link_css_class="products-list__image--link"
                         }
                 </td>
-                    <input type="checkbox" name="departament_ids[]" value="{$departament.departament_id}" 
-                    class="cm-item {$no_hide_input} 
-                    cm-item-status-{$departament.status|lower} hide" />
-                </td>
-                
+                    
                 <td data-th="{__("name")}">
                     <a class="row-status" href="{"departaments.update_departament?departament_id=`$departament.departament_id`"|fn_url}">{$departament.departament}</a>
                 </td>
