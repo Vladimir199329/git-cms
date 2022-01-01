@@ -30,17 +30,19 @@
                     />
                 </th>
                 <th  width="6%"></th>
-                <th  width="15%"><a class="cm-noajax" href="{"`$c_url`&sort_by=name&sort_order=`$search.sort_order_rev`"|fn_url}" 
+                <th  width="15%"><a class="cm-ajax" href="{"`$c_url`&sort_by=name&sort_order=`$search.sort_order_rev`"|fn_url}" 
                 data-ca-target-id={$rev}>{__("name")}{if $search.sort_by === "name"}{$c_icon nofilter}{else}{$c_dummy nofilter}{/if}</a>
                 </th>
                 <th width="15%" data-ca-target-id={$rev}>{__("description")}</th>
 
-                <th width="15%"><a class="cm-noajax" href="{"`$c_url`&sort_by=timestamp&sort_order=`$search.sort_order_rev`"|fn_url}" 
+                <th width="15%"><a class="cm-ajax" href="{"`$c_url`&sort_by=timestamp&sort_order=`$search.sort_order_rev`"|fn_url}" 
                 data-ca-target-id={$rev}>{__("creation_date")}{if $search.sort_by === "timestamp"}{$c_icon nofilter}{else}{$c_dummy nofilter}{/if}</a>
                 </th>
 
+                <th  width="6%"></th>
+
                 <th width="6%" class="mobile-hide">&nbsp;</th>
-                <th width="10%" class="right"><a class="cm-noajax" href="{"`$c_url`&sort_by=status&sort_order=`$search.sort_order_rev`"|fn_url}" 
+                <th width="10%" class="right"><a class="cm-ajax" href="{"`$c_url`&sort_by=status&sort_order=`$search.sort_order_rev`"|fn_url}" 
                 data-ca-target-id={$rev}>{__("status")}{if $search.sort_by === "status"}{$c_icon nofilter}{else}{$c_dummy nofilter}{/if}</a>
                 </th>
             </tr>
@@ -89,7 +91,13 @@
                    {$departament.description|strip_tags}
                 </td>
                 <td width="15%" data-th="{__("creation_date")}">
-                    {$departament.timestamp|date_format:"`$settings.Appearance.date_format`, `$settings.Appearance.time_format`"}
+                    {$departament.timestamp|date_format:"`$settings.Appearance.date_format`"}
+                </td>
+
+                <td width="15%">
+                   
+                   {$user=($departament['user_id'])|fn_get_user_short_info:$smarty.session.auth}
+                   {if $user}{__('director')}: {$user.firstname} {$user.lastname}{/if}
                 </td>
 
                 <td width="6%" class="mobile-hide">
