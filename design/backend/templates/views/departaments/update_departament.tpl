@@ -53,14 +53,32 @@
             <label class="control-label">{__("director")}</label>
             <div class="controls">
                 {include file="pickers/users/picker.tpl" 
-                but_text=__("add_users") data_id="return_users" 
-                but_meta="btn" input_name="departament_data[user_id]" 
-                item_ids=$departament_data.user_id 
+                but_text=__("add_user") 
+                data_id="return_users" 
+                but_meta="btn" 
+                input_name="departament_data[director_id]" 
+                item_ids=$departament_data.director_id 
                 placement="right"
                 display="radio" view_mode="single_button"
-                user_info=$u_info}
+                user_info=$d_info}
             </div>
         </div>
+
+        <div class="control-group">
+            <label class="control-label">{__("workers")}</label>
+            <div class="controls">
+                {include file="pickers/users/picker.tpl"
+                but_text=__("add_workers")
+                data_id="return_users"
+                but_meta="btn"
+                input_name="departament_data[workers_ids]"
+                item_ids=$departament_data.workers_ids
+                placement="right"
+                user_info=$w_info}
+            </div>
+        </div>
+
+
     <!--content_general--></div>
 
     <div id="content_addons" class="hidden clearfix">

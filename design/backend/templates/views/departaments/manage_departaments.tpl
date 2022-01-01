@@ -96,8 +96,8 @@
 
                 <td width="15%">
                    
-                   {$user=($departament['user_id'])|fn_get_user_short_info:$smarty.session.auth}
-                   {if $user}{__('director')}: {$user.firstname} {$user.lastname}{/if}
+                   {$director=($departament['director_id'])|fn_get_user_short_info:$smarty.session.auth}
+                   {if $director}{__('director')}: {$director.firstname} {$director.lastname}{/if}
                 </td>
 
                 <td width="6%" class="mobile-hide">

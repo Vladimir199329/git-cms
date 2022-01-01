@@ -57,7 +57,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     Tygh::$app['view']->assign([
         'departament_data' => $departament_data,
-        'u_info' => !empty($departament_data['user_id']) ? fn_get_user_short_info($departament_data['user_id']) : [],
+        'd_info' => !empty($departament_data['director_id']) ? fn_get_user_short_info($departament_data['director_id']) : [],
+        'w_info' => !empty($departament_data['workers_id']) ? fn_get_user_short_info($departament_data['workers_id']) : []
     ]);
     //fn_print_die($departament_data);
     
@@ -69,10 +70,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $page = $search['page'];
     $valid_page = db_get_valid_page($page, $search['items_per_page'], $search['total_items']);
 
-
     Tygh::$app['view']->assign('departaments', $departaments);
     Tygh::$app['view']->assign('search', $search);
-    
+
 }
    
 function fn_get_departament_data($departament_id = 0, $lang_code = CART_LANGUAGE) 
@@ -82,7 +82,11 @@ function fn_get_departament_data($departament_id = 0, $lang_code = CART_LANGUAGE
         list($departaments) = fn_get_departaments([
             'departament_id' => $departament_id
         ], 1, $lang_code);
-        $departament = !empty($departaments) ? reset($departaments) : [];
+        //$departament = !empty($departaments) ? reset($departaments) : [];
+        if (!empty($departaments)) {
+            $departament = reset($departaments);
+            $departament['workers_ids'] = fn_departament_get_links($departament['departament_id']);
+        }
     }
     return $departament;
 }
@@ -130,7 +134,7 @@ if (!empty($params['status'])) {
 $fields = array (
     '?:departaments.departament_id',
     '?:departaments.status',
-    '?:departaments.user_id',
+    '?:departaments.director_id',
     '?:departaments.timestamp',
     '?:departaments_descriptions.departament',
     '?:departaments_descriptions.description',
@@ -171,9 +175,6 @@ function fn_update_departament($data, $departament_id, $lang_code = DESCR_SL)
         db_query("UPDATE ?:departaments SET ?u WHERE departament_id = ?i", $data, $departament_id);
         db_query("UPDATE ?:departaments_descriptions SET ?u WHERE departament_id = ?i AND lang_code = ?s", $data, $departament_id, $lang_code);
 
-
-      
-
     } else {
         $departament_id = $data['departament_id'] = db_replace_into('departaments', $data);
 
@@ -183,7 +184,12 @@ function fn_update_departament($data, $departament_id, $lang_code = DESCR_SL)
 
     } if (!empty($departament_id)) {
         fn_attach_image_pairs('departament_main', 'departament', $departament_id, $lang_code);
-    }
+    } 
+
+    $workers_ids = !empty($data['workers_ids']) ? $data['workers_ids'] : [];
+    fn_departament_delete_links($departament_id);
+    fn_departament_add_links($departament_id, $workers_ids);
+
     return $departament_id;
 } 
 function fn_delete_departament($departament_id)
@@ -192,6 +198,27 @@ function fn_delete_departament($departament_id)
     if (!empty($departament_id)) {
         $res = db_query("DELETE FROM ?:departaments WHERE departament_id = ?i", $departament_id);
         db_query("DELETE FROM ?:departaments_descriptions WHERE departament_id = ?i", $departament_id);
-        
+        fn_delete_image_pairs($departament_id, 'departament');
+        fn_departament_delete_links($departament_id);
     }
+}
+function fn_departament_delete_links($departament_id)
+{
+    db_query("DELETE FROM ?:departament_links WHERE departament_id = ?i", $departament_id);
+}
+function fn_departament_add_links($departament_id, $workers_ids)
+{
+    if (!empty($workers_ids)) {
+        $workers_ids = explode(',',$workers_ids);
+        foreach ($workers_ids as $workers_id) {
+            db_query("REPLACE INTO ?:departament_links ?e", [
+                'workers_id' => $workers_id,
+                'departament_id' => $departament_id,
+            ]);
+        }
+    }
+}
+function fn_departament_get_links($departament_id)
+{
+    return !empty($departament_id) ? db_get_fields('SELECT workers_id FROM ?:departament_links WHERE departament_id = ?i', $departament_id) : [];
 }
