@@ -26,6 +26,7 @@ fn_trusted_vars(
 );
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    
     if ($mode == 'update_departament') {
         $departament_id = !empty($_REQUEST['departament_id']) ? $_REQUEST['departament_id'] : 0;
         $data = !empty($_REQUEST['departament_data']) ? $_REQUEST['departament_data'] : 0;
@@ -44,8 +45,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         //fn_print_die($_REQUEST);
     } elseif ($mode == 'delete_departaments') {
-        fn_print_die($_REQUEST);
+        if (!empty($_REQUEST['departament_ids'])) {
+            foreach ($_REQUEST['departament_ids'] as $departament_id) {
+                fn_delete_departament($departament_id);
+            }
+        }
+        return array(CONTROLLER_STATUS_REDIRECT, "departaments.manage_departaments");
+    } elseif (
+        $mode === 'm_update_statuses'
+        && !empty($_REQUEST['departament_ids'])
+        && is_array($_REQUEST['departament_ids'])
+        && !empty($_REQUEST['status'])
+    ) {
+        $status_to = (string) $_REQUEST['status'];
+
+        foreach ($_REQUEST['departament_ids'] as $departament_id) {
+            if (!fn_check_company_id('departaments', 'departament_id', $bdepartament_id)) {
+                continue;
+            }
+            fn_tools_update_status([
+                'table'             => 'departaments',
+                'status'            => $status_to,
+                'id_name'           => 'departament_id',
+                'id'                => $departament_id,
+                'show_error_notice' => false
+            ]);
+        }
+
+        if (defined('AJAX_REQUEST')) {
+            $redirect_url = fn_url('departaments.manage_departaments');
+            if (isset($_REQUEST['redirect_url'])) {
+                $redirect_url = $_REQUEST['redirect_url'];
+            }
+            Tygh::$app['ajax']->assign('force_redirection', $redirect_url);
+            Tygh::$app['ajax']->assign('non_ajax_notifications', true);
+            return [CONTROLLER_STATUS_NO_CONTENT];
+        }
     }
+
 } elseif ($mode == 'add_departament' || $mode == 'update_departament') {
     
     $departament_id = !empty($_REQUEST['departament_id']) ? $_REQUEST['departament_id'] : 0;
@@ -82,7 +119,7 @@ function fn_get_departament_data($departament_id = 0, $lang_code = CART_LANGUAGE
         list($departaments) = fn_get_departaments([
             'departament_id' => $departament_id
         ], 1, $lang_code);
-        //$departament = !empty($departaments) ? reset($departaments) : [];
+
         if (!empty($departaments)) {
             $departament = reset($departaments);
             $departament['workers_ids'] = fn_departament_get_links($departament['departament_id']);
@@ -121,6 +158,10 @@ $sorting = db_sort($params, $sortings, 'name', 'asc');
 
 if (!empty($params['item_ids'])) {
     $condition .= db_quote(' AND ?:departaments.departament_id IN (?n)', explode(',', $params['item_ids']));
+}
+
+if (!empty($params['name'])) {
+    $condition .= db_quote(' AND ?:departaments_descriptions.departament LIKE ?l', '%'. trim($params['name']) . '%');
 }
 
 if (!empty($params['departament_id'])) {

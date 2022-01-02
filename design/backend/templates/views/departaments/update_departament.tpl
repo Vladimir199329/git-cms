@@ -4,13 +4,11 @@
     {assign var="id" value=0}
 {/if}
 
-
 {capture name="mainbox"}
 
 <form action="{""|fn_url}" method="post" class="form-horizontal form-edit" name="departaments_form" enctype="multipart/form-data">
 <input type="hidden" class="cm-no-hide-input" name="fake" value="1" />
 <input type="hidden" class="cm-no-hide-input" name="departament_id" value="{$id}" />
-
 
     <div id="content_general">
         <div class="control-group">
@@ -77,7 +75,6 @@
                 user_info=$w_info}
             </div>
         </div>
-
 
     <!--content_general--></div>
 

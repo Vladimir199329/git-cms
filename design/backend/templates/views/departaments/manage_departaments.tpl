@@ -11,7 +11,7 @@
 {$rev=$smarty.request.content_id|default:"pagination_contents_departaments"}
 {include_ext file="common/icon.tpl" class="icon-`$search.sort_order_rev`" assign=c_icon}
 {include_ext file="common/icon.tpl" class="icon-dummy" assign=c_dummy}
-{$departaments_statuses=""|fn_get_default_statuses:true}
+{$departaments_statuses=""|fn_get_default_statuses:false}
 {$has_permission = fn_check_permissions("departaments", "update_status", "admin", "POST")}
 
 {if $departaments}
@@ -33,6 +33,7 @@
                 <th  width="15%"><a class="cm-ajax" href="{"`$c_url`&sort_by=name&sort_order=`$search.sort_order_rev`"|fn_url}" 
                 data-ca-target-id={$rev}>{__("name")}{if $search.sort_by === "name"}{$c_icon nofilter}{else}{$c_dummy nofilter}{/if}</a>
                 </th>
+
                 <th width="15%" data-ca-target-id={$rev}>{__("description")}</th>
 
                 <th width="15%"><a class="cm-ajax" href="{"`$c_url`&sort_by=timestamp&sort_order=`$search.sort_order_rev`"|fn_url}" 
@@ -55,7 +56,7 @@
                     data-ca-id="{$departament.departament_id}"
                 {/if}
             >
-                {$allow_save=true}
+                {$allow_save=$departament|fn_allow_save_object:"departaments"}
 
                 {if $allow_save}
                     {$no_hide_input="cm-no-hide-input"}
@@ -72,8 +73,7 @@
                     cm-item-status-{$departament.status|lower} hide" />
                 </td>
                 <td class="products-list__image">
-                        {include
-                                file="common/image.tpl"
+                        {include file="common/image.tpl"
                                 image=$departament.main_pair.icon|default:$departament_data.main_pair.detailed
                                 image_id=$departament_data.main_pair.image_id
                                 image_width=$image_width
@@ -95,7 +95,6 @@
                 </td>
 
                 <td width="15%">
-                   
                    {$director=($departament['director_id'])|fn_get_user_short_info:$smarty.session.auth}
                    {if $director}{__('director')}: {$director.firstname} {$director.lastname}{/if}
                 </td>
@@ -149,7 +148,12 @@
 
 {/capture}
 </form>
-
+{capture name="sidebar"}
+    {hook name="banners:manage_sidebar"}
+    {include file="common/saved_search.tpl" dispatch="departaments.manage_departaments" view_type="departaments"}
+    {include file="design/backend/templates/views/departaments/components/departaments_search_form.tpl" dispatch="departaments.manage_departaments"}
+    {/hook}
+{/capture}
 
 {hook name="departament:manage_mainbox_params"}
     {$page_title = __("departaments")}
