@@ -6,7 +6,7 @@
     <h6>{__("search")}</h6>
 {/if}
 
-<form name="banner_search_form" action="{""|fn_url}" method="get" class="{$form_meta}">
+<form name="departaments_search_form" action="{""|fn_url}" method="get" class="{$form_meta}">
 
     {if $smarty.request.redirect_url}
         <input type="hidden" name="redirect_url" value="{$smarty.request.redirect_url}" />

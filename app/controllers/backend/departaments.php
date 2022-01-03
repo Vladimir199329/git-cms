@@ -102,8 +102,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //fn_print_die('end');
 } elseif ($mode === 'manage_departaments') {
     //fn_print_die('end');
-    list($departaments, $search) = fn_get_departaments($_REQUEST, Registry::get('settings.Appearance.admin_elements_per_page'), DESCR_SL);
-    //fn_print_die($departaments);
+    list($departaments, $search) = fn_get_departaments($_REQUEST, 4, DESCR_SL);
+    //fn_print_die($search);
     $page = $search['page'];
     $valid_page = db_get_valid_page($page, $search['items_per_page'], $search['total_items']);
 
@@ -161,7 +161,7 @@ if (!empty($params['item_ids'])) {
 }
 
 if (!empty($params['name'])) {
-    $condition .= db_quote(' AND ?:departaments_descriptions.departament LIKE ?l', '%'. trim($params['name']) . '%');
+    $condition .= db_quote(' AND ?:departaments_descriptions.departament LIKE ?l', '%' . trim($params['name']) . '%');
 }
 
 if (!empty($params['departament_id'])) {

@@ -145,11 +145,11 @@
 {/capture}
 
 
-
-{/capture}
 </form>
+{/capture}
+
 {capture name="sidebar"}
-    {hook name="banners:manage_sidebar"}
+    {hook name="departaments:manage_sidebar"}
     {include file="common/saved_search.tpl" dispatch="departaments.manage_departaments" view_type="departaments"}
     {include file="design/backend/templates/views/departaments/components/departaments_search_form.tpl" dispatch="departaments.manage_departaments"}
     {/hook}
