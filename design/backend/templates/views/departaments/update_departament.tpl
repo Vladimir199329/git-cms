@@ -99,10 +99,6 @@
 
 {/capture}
 
-{notes}
-    {__("departament_details_notes", ["[layouts_href]" => fn_url('block_manager.manage')])}
-{/notes}
-
 {include file="common/mainbox.tpl"
     title=($id) ? $departament_data.departament : __("departament.new_departament")
     content=$smarty.capture.mainbox
