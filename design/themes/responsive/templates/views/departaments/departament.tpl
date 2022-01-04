@@ -15,13 +15,12 @@
                 {$departament_data.description nofilter}
             </div>
     </div>
-</div>
 
-{include file="common/pagination.tpl" save_current_page=true save_current_url=true div_id="pagination_contents_departaments"}
-{$c_url=$config.current_url|fn_query_remove:"sort_by":"sort_order"}
-{$rev=$smarty.request.content_id|default:"pagination_contents"}
-{include_ext file="common/icon.tpl" class="icon-`$search.sort_order_rev`" assign=c_icon}
-{include_ext file="common/icon.tpl" class="icon-dummy" assign=c_dummy}
+    {include file="common/pagination.tpl" save_current_page=true save_current_url=true div_id="pagination_contents_departaments"}
+    {$c_url=$config.current_url|fn_query_remove:"sort_by":"sort_order"}
+    {$rev=$smarty.request.content_id|default:"pagination_contents"}
+    {include_ext file="common/icon.tpl" class="icon-`$search.sort_order_rev`" assign=c_icon}
+    {include_ext file="common/icon.tpl" class="icon-dummy" assign=c_dummy}
         {if $workers}
                 <div class="ty-container">
                     <h3>{__("workers")}</h3>
@@ -60,5 +59,5 @@
                 <p class="no-items">{__("no_data")}</p>
             {/if}
         {include file="common/pagination.tpl"}
-    <!--product_features_{$block.block_id}--></div>
+<!--product_features_{$block.block_id}--></div>
 {capture name="mainbox_title"}{$departament_data.departament nofilter}{/capture}
