@@ -19,7 +19,7 @@
 
 {include file="common/pagination.tpl" save_current_page=true save_current_url=true div_id="pagination_contents_departaments"}
 {$c_url=$config.current_url|fn_query_remove:"sort_by":"sort_order"}
-{$rev=$smarty.request.content_id|default:"pagination_contents_departaments"}
+{$rev=$smarty.request.content_id|default:"pagination_contents"}
 {include_ext file="common/icon.tpl" class="icon-`$search.sort_order_rev`" assign=c_icon}
 {include_ext file="common/icon.tpl" class="icon-dummy" assign=c_dummy}
         {if $workers}
@@ -28,10 +28,10 @@
                     <table class="table table-middle table--relative table-responsive">
                         <thead>
                         <tr>
-                            <th><a class="cm-no-ajax" href="{"`$c_url`&sort_by=names&sort_order=`$search.sort_order_rev`"|fn_url}" 
-                                data-ca-target-id={$rev}>{__("person_name")}{if $search.sort_by === "name"}{$c_icon nofilter}{else}{$c_dummy nofilter}{/if}</a>
+                            <th><a class="cm-ajax" href="{"`$c_url`&sort_by=names&sort_order=`$search.sort_order_rev`"|fn_url}" 
+                                data-ca-target-id={$rev}>{__("product_reviews.first_and_last_name")}{if $search.sort_by === "name"}{$c_icon nofilter}{else}{$c_dummy nofilter}{/if}</a>
                             </th>
-                            <th><a class="cm-no-ajax" href="{"`$c_url`&sort_by=email&sort_order=`$search.sort_order_rev`"|fn_url}" 
+                            <th><a class="cm-ajax" href="{"`$c_url`&sort_by=email&sort_order=`$search.sort_order_rev`"|fn_url}" 
                                 data-ca-target-id={$rev}>{__("email")}{if $search.sort_by === "email"}{$c_icon nofilter}{else}{$c_dummy nofilter}{/if}</a>
                             </th>
                         </tr>
@@ -48,7 +48,10 @@
                                 <td class="ty-categories-picker__title" style="width: 6%" class="{$no_hide_input} ty-left" data-th="{__("name")}">
                                     <p class="row-status" >{$worker.lastname} {$worker.firstname}</p>
                                 </td>
-                                <td class="ty-categories-picker__title" style="width: 6%" data-th="{__("email")}"><a class="row-status" href="mailto:{$user.email|escape:url}">{$worker.email}</a></td>
+                                <td class="ty-categories-picker__title" style="width: 6%" data-th="{__("email")}">
+                                    <a class="row-status" href="mailto:{$user.email|escape:url}">{$worker.email}
+                                    </a>
+                                </td>
                             </tr>
                         {/foreach}
                     </table>
