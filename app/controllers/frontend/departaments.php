@@ -27,17 +27,26 @@ fn_trusted_vars(
 
 if ($mode == 'departaments_views') {
 
-
         // Save current url to session for 'Continue shopping' button
         Tygh::$app['session']['continue_url'] = "departaments.departaments_views";
 
         $params = $_REQUEST;
+        if ($items_per_page = 3) {
+            $params['items_per_page'] = $items_per_page;
+        }
 
         $params['user_id'] = Tygh::$app['session']['auth']['user_id'];
-    //fn_print_die(Tygh::$app['session']['auth']['user_id']);
+
         list($departaments, $search) = fn_get_departaments($params, Registry::get('settings.Appearance.products_per_page'), CART_LANGUAGE);
 
-        //$selected_layout = fn_get_products_layout($_REQUEST);
+        foreach ($departaments as $departament => $key) {
+            if($key['director_id']) {
+                $departaments[$departament]['director_id'] = fn_get_user_short_info($departaments[$departament]['director_id']);
+            } else {
+                $departaments[$departament]['director_id'] = '';
+            }
+            $departaments = $departaments;
+        }
        
         Tygh::$app['view']->assign('departaments', $departaments);
         Tygh::$app['view']->assign('search', $search);
@@ -47,10 +56,16 @@ if ($mode == 'departaments_views') {
         // [/Breadcrumbs]
 
 } elseif ($mode === 'departament') {
+    $params = $_REQUEST;
+
+    if ($items_per_page = 2) {
+        $params['items_per_page'] = $items_per_page;
+    }
+
     $departament_data = [];
     $departament_id = !empty($_REQUEST['departament_id']) ? $_REQUEST['departament_id'] : 0;
     $departament_data = fn_get_departament_data($departament_id , CART_LANGUAGE);
-//fn_print_die($departament_data);
+    //fn_print_die($departament_data);
     if (empty($departament_data)) {
         return [CONTROLLER_STATUS_NO_PAGE];
     }
@@ -62,14 +77,12 @@ if ($mode == 'departaments_views') {
         }
         $departaments = $departaments;
     }
-    foreach ($departament_data['workers_ids'] as $worker => $id) {
-        $departament_data['workers_ids'][$worker] = fn_get_user_short_info($id);
-        $worker++;
-    }
-    Tygh::$app['view']->assign('workers', $departament_data['workers_ids']);
+    $params['user_id'] = $departament_data['workers_ids'];
+    list($users, $search) =fn_get_users($params, $auth, Registry::get('settings.Appearance.admin_elements_per_page'));
+ 
     Tygh::$app['view']->assign('departament_data', $departament_data);
+    Tygh::$app['view']->assign('search', $search);
+    Tygh::$app['view']->assign('workers', $users);
 
-    fn_add_breadcrumb(__("departaments"), [$departament_data['departament']]);
-
-    
+    fn_add_breadcrumb(__("departaments"), [$departament_data['departament']]);   
 }
