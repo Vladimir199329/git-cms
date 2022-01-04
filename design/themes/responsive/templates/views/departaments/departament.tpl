@@ -16,7 +16,7 @@
             </div>
     </div>
 </div>
-{* {$departament_data|@var_dump} *}
+
 {include file="common/pagination.tpl" save_current_page=true save_current_url=true div_id="pagination_contents_departaments"}
 {$c_url=$config.current_url|fn_query_remove:"sort_by":"sort_order"}
 {$rev=$smarty.request.content_id|default:"pagination_contents_departaments"}
