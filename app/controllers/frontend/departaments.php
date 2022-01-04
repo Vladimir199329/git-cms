@@ -67,10 +67,12 @@ if ($mode == 'departaments_views') {
     if (empty($departament_data)) {
         return [CONTROLLER_STATUS_NO_PAGE];
     }
-  
-    $params['user_id'] = $departament_data['workers_ids'];
-    list($users, $search) =fn_get_users($params, $auth, Registry::get('settings.Appearance.admin_elements_per_page'));
- 
+    
+    if (!empty($departament_data['workers_ids'])) {
+        $params['user_id'] = $departament_data['workers_ids'];
+        list($users, $search) =fn_get_users($params, $auth, Registry::get('settings.Appearance.admin_elements_per_page'));
+    }
+    
     Tygh::$app['view']->assign('departament_data', $departament_data);
     Tygh::$app['view']->assign('search', $search);
     Tygh::$app['view']->assign('workers', $users);
