@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         list($departaments, $search) = fn_get_departaments($params, Registry::get('settings.Appearance.products_per_page'), CART_LANGUAGE);
 
         //$selected_layout = fn_get_products_layout($_REQUEST);
-      
+       
         Tygh::$app['view']->assign('departaments', $departaments);
         Tygh::$app['view']->assign('search', $search);
         Tygh::$app['view']->assign('columns', 3);
@@ -56,51 +56,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($departament_data)) {
         return [CONTROLLER_STATUS_NO_PAGE];
     }
-    
-
+    foreach ($departaments as $departament => $key) {
+        if($key['director_id']) {
+            $departaments[$departament]['director_id'] = fn_get_user_short_info($departaments[$departament]['director_id']);
+        } else {
+            $departaments[$departament]['director_id'] = '';
+        }
+        $departaments = $departaments;
+    }
+    foreach ($departament_data['workers_ids'] as $worker => $id) {
+        $departament_data['workers_ids'][$worker] = fn_get_user_short_info($id);
+        $worker++;
+    }
+    Tygh::$app['view']->assign('workers', $departament_data['workers_ids']);
     Tygh::$app['view']->assign('departament_data', $departament_data);
 
     fn_add_breadcrumb(__("departaments"), [$departament_data['departament']]);
 
-    $params = $_REQUEST;
-    $params['extend'] = array('description');
-    $params['item_ids'] = !empty($departament_data['workers_ids']) ? implode(',', $departament_data['workers_ids']) : -1;
-
-    if ($items_per_page = fn_change_session_param(Tygh::$app['session']['search_params'], $_REQUEST, 'items_per_page')) {
-        $params['items_per_page'] = $items_per_page;
-    }
-    if ($sort_by = fn_change_session_param(Tygh::$app['session']['search_params'], $_REQUEST, 'sort_by')) {
-        $params['sort_by'] = $sort_by;
-    }
-    if ($sort_order = fn_change_session_param(Tygh::$app['session']['search_params'], $_REQUEST, 'sort_order')) {
-        $params['sort_order'] = $sort_order;
-    }
-
-    if (isset($params['order_ids'])) {
-        $order_ids = is_array($params['order_ids']) ? $params['order_ids'] : explode(',', $params['order_ids']);
-        foreach ($order_ids as $order_id) {
-            /** @psalm-suppress UndefinedGlobalVariable */
-            if (!fn_is_order_allowed($order_id, $auth)) {
-                return [CONTROLLER_STATUS_NO_PAGE];
-            }
-        }
-    }
-
-    list($products, $search) = fn_get_products($params, Registry::get('settings.Appearance.products_per_page'));
-
-    fn_filters_handle_search_result($params, $products, $search);
-
-    fn_gather_additional_products_data($products, [
-        'get_icon'      => true,
-        'get_detailed'  => true,
-        'get_options'   => true,
-        'get_discounts' => true,
-        'get_features'  => false
-    ]);
-
-    $selected_layout = fn_get_products_layout($_REQUEST);
-
-    Tygh::$app['view']->assign('products', $products);
-    Tygh::$app['view']->assign('search', $search);
-    Tygh::$app['view']->assign('selected_layout', $selected_layout);
+    
 }
