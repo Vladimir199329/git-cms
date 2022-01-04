@@ -94,7 +94,7 @@
                     {$departament.timestamp|date_format:"`$settings.Appearance.date_format`"}
                 </td>
 
-                <td width="15%">
+                <td  width="15%">
                    {$director=($departament['director_id'])|fn_get_user_short_info:$smarty.session.auth}
                    {if $director}{__('director')}: {$director.firstname} {$director.lastname}{/if}
                 </td>

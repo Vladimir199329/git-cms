@@ -43,6 +43,8 @@
                                         <a href="{"departaments.departament?departament_id={$departament.departament_id}"|fn_url}" 
                                         class="product-title" title="{$departament.departament}">{$departament.departament}</a>
                                     </bdi>
+                                    {$director=($departament['director_id'])|fn_get_user_short_info:$smarty.session.auth}
+                                    {if $director}{__('director')}: {$director.firstname} {$director.lastname}{/if}
                                 </div>
                             </div>
                         {/if}
@@ -51,7 +53,6 @@
             {/foreach}
         {/strip}
     </div>
-
     {if !$no_pagination}
         {include file="common/pagination.tpl"}
     {/if}

@@ -25,9 +25,7 @@ fn_trusted_vars(
     'departament_data'
 );
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-} if ($mode == 'departaments_views') {
+if ($mode == 'departaments_views') {
 
 
         // Save current url to session for 'Continue shopping' button

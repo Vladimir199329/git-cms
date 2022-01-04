@@ -16,9 +16,13 @@
             </div>
     </div>
 </div>
-{* {$departament_data|@var_dump}                        *}
+{$departament_data|@var_dump}                       
             {if $workers}
-                    <div class="ty-sort-container">
+                {if !$no_pagination}
+                    {include file="common/pagination.tpl"}
+                {/if}
+                    <div class="ty-container">
+                        <h3>{__("workers")}</h3>
                         <table class="table table-middle table--relative table-responsive">
                             <thead>
                             <tr>
@@ -39,10 +43,10 @@
                                         {assign var = "no_hide_input" value =""}
                                     {/if}
 
-                                    <td width="50%" class="{$no_hide_input} ty-left" data-th="{__("name")}">
-                                        <a class="row-status" href="{"products.update_collection?collection_id=`$collection.collection_id`"|fn_url}">{$worker.lastname} {$worker.firstname}</a>
+                                    <td class="ty-categories-picker__title" style="width: 6%" class="{$no_hide_input} ty-left" data-th="{__("name")}">
+                                        <p class="row-status" >{$worker.lastname} {$worker.firstname}</p>
                                     </td>
-                                    <td width="6%" data-th="{__("email")}"><a class="row-status" href="mailto:{$user.email|escape:url}">{$worker.email}</a></td>
+                                    <td class="ty-categories-picker__title" style="width: 6%" data-th="{__("email")}"><a class="row-status" href="mailto:{$user.email|escape:url}">{$worker.email}</a></td>
                                 </tr>
                             {/foreach}
                         </table>
