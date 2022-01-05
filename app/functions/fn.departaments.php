@@ -75,6 +75,10 @@ if (!empty($params['departament_id'])) {
     $condition .= db_quote(' AND ?:departaments.departament_id = ?i', $params['departament_id']);
 }
 
+if (!empty($params['director_id'])) {
+    $condition .= db_quote(' AND ?:departaments.director_id = ?i', $params['director_id']);
+}
+
 if (!empty($params['status'])) {
     $condition .= db_quote(' AND ?:departaments.status = ?s', $params['status']);
 }

@@ -21,9 +21,9 @@ defined('BOOTSTRAP') or die('Access denied');
 
 $suffix = '';
 
-fn_trusted_vars(
-    'departament_data'
-);
+// fn_trusted_vars(
+//     'departament_data'
+// );
 
 if ($mode == 'departaments_views') {
 
@@ -42,10 +42,8 @@ if ($mode == 'departaments_views') {
             }
             $departaments = $departaments;
         }
-        $params['user_id'] = Tygh::$app['session']['auth']['user_id'];
-
+        $params['director_id'] = Tygh::$app['session']['auth']['user_id'];
         list($departaments, $search) = fn_get_departaments($params, Registry::get('settings.Appearance.products_per_page'), CART_LANGUAGE);
-
        
         Tygh::$app['view']->assign('departaments', $departaments);
         Tygh::$app['view']->assign('search', $search);
