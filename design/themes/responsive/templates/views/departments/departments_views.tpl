@@ -43,8 +43,11 @@
                                         <a href="{"departments.department?department_id={$department.department_id}"|fn_url}" 
                                         class="product-title" title="{$department.department}">{$department.department}</a>
                                     </bdi>
+                                    <a href="{"departments.department?department_id={$department.department_id}"|fn_url}" 
+                                        class="product-title" title="{$department.department}">
                                     {$director=($department['director_id'])|fn_get_user_short_info:$smarty.session.auth}
                                     {if $director}{__('director')}: {$director.firstname} {$director.lastname}{/if}
+                                    </a>
                                 </div>
                             </div>
                         {/if}
