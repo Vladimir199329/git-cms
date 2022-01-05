@@ -70,7 +70,7 @@ $fn_list = array(
     'fn.addons.php',
     'fn.exim.php',
     'fn.order_management.php',
-    'fn.departaments.php'
+    'fn.departments.php'
 );
 
 $fn_list[] = 'fn.' . strtolower(PRODUCT_EDITION) . '.php';
