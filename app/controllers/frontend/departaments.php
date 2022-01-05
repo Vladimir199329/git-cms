@@ -42,9 +42,10 @@ if ($mode == 'departaments_views') {
             }
             $departaments = $departaments;
         }
-        $params['director_id'] = Tygh::$app['session']['auth']['user_id'];
+        
+        $params['director_id'] = Tygh::$app['session']['auth']['user_id'] ? Tygh::$app['session']['auth']['user_id'] : -1;
         list($departaments, $search) = fn_get_departaments($params, Registry::get('settings.Appearance.products_per_page'), CART_LANGUAGE);
-       
+        
         Tygh::$app['view']->assign('departaments', $departaments);
         Tygh::$app['view']->assign('search', $search);
         Tygh::$app['view']->assign('columns', 3);
