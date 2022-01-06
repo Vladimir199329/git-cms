@@ -36,11 +36,6 @@ if ($mode == 'departments_views') {
             }
             $departments = $departments;
         }
-       
-        $params['user_id'] = Tygh::$app['session']['auth']['user_id'];
-        if (empty($params['user_id'])) {
-            return array(CONTROLLER_STATUS_NO_PAGE);
-        }
         
         list($departments, $search) = fn_get_departments($params, Registry::get('settings.Appearance.products_per_page'), CART_LANGUAGE);
         
@@ -56,10 +51,7 @@ if ($mode == 'departments_views') {
     if ($items_per_page = 5) {
         $params['items_per_page'] = $items_per_page;
     }
-    $params['user_id'] = Tygh::$app['session']['auth']['user_id'];
-    if (empty($params['user_id'])) {
-        return array(CONTROLLER_STATUS_NO_PAGE);
-    }
+
     $department_data = [];
     $department_id = !empty($_REQUEST['department_id']) ? $_REQUEST['department_id'] : 0;
     $department_data = fn_get_department_data($department_id , CART_LANGUAGE);
