@@ -30,21 +30,33 @@
                     />
                 </th>
                 <th  width="6%"></th>
-                <th  width="15%"><a class="cm-ajax" href="{"`$c_url`&sort_by=name&sort_order=`$search.sort_order_rev`"|fn_url}" 
-                data-ca-target-id={$rev}>{__("name")}{if $search.sort_by === "name"}{$c_icon nofilter}{else}{$c_dummy nofilter}{/if}</a>
+                <th  width="15%">
+                    <a class="cm-ajax" 
+                    href="{"`$c_url`&sort_by=name&sort_order=`$search.sort_order_rev`"|fn_url}" 
+                    data-ca-target-id={$rev}>{__("name")}
+                    {if $search.sort_by === "name"}{$c_icon nofilter}{else}{$c_dummy nofilter}{/if}
+                    </a>
                 </th>
 
                 <th width="15%" data-ca-target-id={$rev}>{__("description")}</th>
 
-                <th width="15%"><a class="cm-ajax" href="{"`$c_url`&sort_by=timestamp&sort_order=`$search.sort_order_rev`"|fn_url}" 
-                data-ca-target-id={$rev}>{__("creation_date")}{if $search.sort_by === "timestamp"}{$c_icon nofilter}{else}{$c_dummy nofilter}{/if}</a>
+                <th width="15%">
+                    <a class="cm-ajax" 
+                    href="{"`$c_url`&sort_by=timestamp&sort_order=`$search.sort_order_rev`"|fn_url}" 
+                    data-ca-target-id={$rev}>{__("creation_date")}
+                    {if $search.sort_by === "timestamp"}{$c_icon nofilter}{else}{$c_dummy nofilter}{/if}
+                    </a>
                 </th>
 
                 <th  width="6%"></th>
 
                 <th width="6%" class="mobile-hide">&nbsp;</th>
-                <th width="10%" class="right"><a class="cm-ajax" href="{"`$c_url`&sort_by=status&sort_order=`$search.sort_order_rev`"|fn_url}" 
-                data-ca-target-id={$rev}>{__("status")}{if $search.sort_by === "status"}{$c_icon nofilter}{else}{$c_dummy nofilter}{/if}</a>
+                <th width="10%" class="right">
+                    <a class="cm-ajax" 
+                    href="{"`$c_url`&sort_by=status&sort_order=`$search.sort_order_rev`"|fn_url}" 
+                    data-ca-target-id={$rev}>{__("status")}
+                    {if $search.sort_by === "status"}{$c_icon nofilter}{else}{$c_dummy nofilter}{/if}
+                    </a>
                 </th>
             </tr>
             </thead>
@@ -85,7 +97,10 @@
                 </td>
                     
                 <td data-th="{__("name")}">
-                    <a class="row-status" href="{"departments.update_department?department_id=`$department.department_id`"|fn_url}">{$department.department}</a>
+                    <a class="row-status" 
+                    href="{"departments.update_department?department_id=`$department.department_id`"|fn_url}">
+                    {$department.department}
+                    </a>
                 </td>
                 <td width="15%">
                    {$department.description|strip_tags}
@@ -117,7 +132,8 @@
                 </td>
                 <td width="10%" class="right" data-th="{__("status")}">
                     {include file="common/select_popup.tpl" 
-                    id=$department.department_id status=$department.status hidden=false object_id_name="department_id" 
+                    id=$department.department_id status=$department.status hidden=false 
+                    object_id_name="department_id" 
                     table="departments" popup_additional_class="`$no_hide_input` dropleft"}
                 </td>
             </tr>
@@ -140,7 +156,8 @@
 
 {capture name="adv_buttons"}
    
-    {include file="common/tools.tpl" tool_href="departments.add_department" prefix="top" hide_tools="true" title=__("add_department") icon="icon-plus"}
+    {include file="common/tools.tpl" tool_href="departments.add_department" 
+    prefix="top" hide_tools="true" title=__("add_department") icon="icon-plus"}
   
 {/capture}
 
@@ -151,7 +168,8 @@
 {capture name="sidebar"}
     {hook name="departments:manage_sidebar"}
     {include file="common/saved_search.tpl" dispatch="departments.manage_departments" view_type="departments"}
-    {include file="design/backend/templates/views/departments/components/departments_search_form.tpl" dispatch="departments.manage_departments"}
+    {include file="design/backend/templates/views/departments/components/departments_search_form.tpl" 
+    dispatch="departments.manage_departments"}
     {/hook}
 {/capture}
 

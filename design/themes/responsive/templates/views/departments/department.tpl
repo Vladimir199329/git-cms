@@ -27,11 +27,19 @@
                     <table class="table table-middle table--relative table-responsive">
                         <thead>
                         <tr>
-                            <th><a class="cm-ajax" href="{"`$c_url`&sort_by=names&sort_order=`$search.sort_order_rev`"|fn_url}" 
-                                data-ca-target-id={$rev}>{__("product_reviews.first_and_last_name")}{if $search.sort_by === "name"}{$c_icon nofilter}{else}{$c_dummy nofilter}{/if}</a>
+                            <th>
+                            <a class="cm-ajax" 
+                            href="{"`$c_url`&sort_by=names&sort_order=`$search.sort_order_rev`"|fn_url}" 
+                                data-ca-target-id={$rev}>
+                                {__("product_reviews.first_and_last_name")}{if $search.sort_by === "name"}
+                                {$c_icon nofilter}{else}{$c_dummy nofilter}{/if}
+                            </a>
                             </th>
-                            <th><a class="cm-ajax" href="{"`$c_url`&sort_by=email&sort_order=`$search.sort_order_rev`"|fn_url}" 
-                                data-ca-target-id={$rev}>{__("email")}{if $search.sort_by === "email"}{$c_icon nofilter}{else}{$c_dummy nofilter}{/if}</a>
+                            <th>
+                            <a class="cm-ajax" href="{"`$c_url`&sort_by=email&sort_order=`$search.sort_order_rev`"|fn_url}" 
+                                data-ca-target-id={$rev}>{__("email")}{if $search.sort_by === "email"}
+                                {$c_icon nofilter}{else}{$c_dummy nofilter}{/if}
+                            </a>
                             </th>
                         </tr>
                         </thead>

@@ -14,7 +14,9 @@
         <div class="control-group">
             <label for="elm_department_name" class="control-label cm-required">{__("name")}</label>
             <div class="controls">
-            <input type="text" name="department_data[department]" id="elm_department_name" value="{$department_data.department}" size="25" class="input-large" /></div>
+            <input type="text" name="department_data[department]" id="elm_department_name" 
+            value="{$department_data.department}" size="25" class="input-large" />
+            </div>
         </div>
 
         <div class="control-group" id="department_graphic">
@@ -31,21 +33,26 @@
             </div>
         </div>
 
-        <div class="control-group id="department_text">
+        <div class="control-group" id="department_text">
             <label class="control-label" for="elm_department_description">{__("description")}:</label>
             <div class="controls">
-                <textarea id="elm_department_description" name="department_data[description]" cols="35" rows="8" class="cm-wysiwyg input-large">{$department_data.description}</textarea>
+                <textarea id="elm_department_description" name="department_data[description]" 
+                cols="35" rows="8" class="cm-wysiwyg input-large">{$department_data.description}
+                </textarea>
             </div>
         </div>
 
         <div class="control-group cm-disabled">
             <label class="control-label"  for="elm_department_timestamp_{$id}">{__("creation_date")}</label>
             <div class="controls">
-            {include file="common/calendar.tpl" date_id="elm_department_timestamp_`$id`" date_name="department_data[timestamp]" date_val=$department_data.timestamp|default:$smarty.const.TIME start_year=$settings.Company.company_start_year}
+                {include file="common/calendar.tpl" date_id="elm_department_timestamp_`$id`"
+                date_name="department_data[timestamp]" 
+                date_val=$department_data.timestamp|default:$smarty.const.TIME start_year=$settings.Company.company_start_year}
             </div>
         </div>
 
-        {include file="common/select_status.tpl" input_name="department_data[status]" id="elm_department_status" obj_id=$id obj=$department_data hidden=false}
+        {include file="common/select_status.tpl" input_name="department_data[status]" 
+        id="elm_department_status" obj_id=$id obj=$department_data hidden=false}
 
         <div class="control-group">
             <label class="control-label">{__("director")}</label>
@@ -84,14 +91,18 @@
 {capture name="buttons"}
     {if $id}
         {capture name="tools_list"}
-            <li>{btn type="list" text=__("delete") class="cm-confirm" href="departments.delete_department?department_id=`$id`" method="POST"}</li>
+            <li>{btn type="list" text=__("delete") class="cm-confirm" 
+            href="departments.delete_department?department_id=`$id`" method="POST"}</li>
         {/capture}
         {dropdown content=$smarty.capture.tools_list}
     {/if}
     {if !$id}
-        {include file="buttons/save_cancel.tpl" but_role="submit-link" but_target_form="departments_form" but_name="dispatch[departments.update_department]"}
+        {include file="buttons/save_cancel.tpl" but_role="submit-link" 
+        but_target_form="departments_form" but_name="dispatch[departments.update_department]"}
     {else}
-        {include file="buttons/save_cancel.tpl" but_name="dispatch[departments.update_department]" but_role="submit-link" but_target_form="departments_form" hide_first_button=$hide_first_button hide_second_button=$hide_second_button save=$id}
+        {include file="buttons/save_cancel.tpl" but_name="dispatch[departments.update_department]" 
+        but_role="submit-link" but_target_form="departments_form" 
+        hide_first_button=$hide_first_button hide_second_button=$hide_second_button save=$id}
     {/if}
 {/capture}
 
