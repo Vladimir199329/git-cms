@@ -12,12 +12,12 @@ class FirstCest
         $I->click("//button[contains(@class, 'ty-btn__login') and text() = 'Войти']");
         $I->amOnPage('/');
         $I->click('Отделы');
-        $I->see('img');
+        $I->see('Отдел 1');
+        $I->see('Денис Петров');
         $I->click('Отдел 1');
-        $I->see('Маслов Алексей');
-        //$I->see("//img[@class, ty-pict]");
-        //$I->click("//button[contains(@class, 'ty-menu__item-link') and text() = 'Отделы']");
-
-        //ty-menu__item-link"
+        $I->see('Михайлова Елена');
+        $I-> makeHtmlSnapshot();
+        $I->click('Мой профиль');
+        $I->click('Выйти');
     }
 }
