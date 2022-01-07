@@ -56,7 +56,7 @@
                                     <p class="row-status" >{$worker.lastname} {$worker.firstname}</p>
                                 </td>
                                 <td class="ty-categories-picker__title" style="width: 6%" data-th="{__("email")}">
-                                    <a class="row-status" href="mailto:{$user.email|escape:url}">{$worker.email}
+                                    <a class="row-status" href="mailto:{$worker.email|escape:url}">{$worker.email}
                                     </a>
                                 </td>
                             </tr>
