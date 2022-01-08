@@ -174,3 +174,4 @@ function fn_department_get_links($department_id)
 {
     return !empty($department_id) ? db_get_fields('SELECT workers_id FROM ?:department_links WHERE department_id = ?i', $department_id) : [];
 }
+
