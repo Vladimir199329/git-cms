@@ -594,3 +594,4 @@ if (Registry::get('config.tweaks.disable_localizations') != true && fn_allowed_f
 }
 
 return $schema;
+
