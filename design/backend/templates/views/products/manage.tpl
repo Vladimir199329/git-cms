@@ -25,7 +25,9 @@
 {if $products}
     {capture name="products_table"}
         <div class="table-responsive-wrapper longtap-selection">
-            <table width="100%" class="table table-middle table--relative table-responsive products-table" data-ca-main-content>
+
+            <table width="100%"  class="table table-middle table--relative table-responsive products-table" data-ca-main-content>
+
             <thead data-ca-bulkedit-default-object="true" data-target=".products-table" data-ca-bulkedit-component="defaultObject">
             <tr>
                 {hook name="products:manage_head"}
@@ -46,7 +48,9 @@
                 {if $search.cid && $search.subcats !== "Y"}
                 <th class="nowrap"><a class="cm-ajax" href="{"`$c_url`&sort_by=position&sort_order=`$search.sort_order_rev`"|fn_url}" data-ca-target-id={$rev}>{__("position_short")}{if $search.sort_by === "position"}{$c_icon nofilter}{else}{$c_dummy nofilter}{/if}</a></th>
                 {/if}
-                <th><a class="cm-ajax" href="{"`$c_url`&sort_by=product&sort_order=`$search.sort_order_rev`"|fn_url}" data-ca-target-id={$rev}>{__("name")}{if $search.sort_by === "product"}{$c_icon nofilter}{else}{$c_dummy nofilter}{/if}</a> /&nbsp;&nbsp;&nbsp; <a class="{$ajax_class}" href="{"`$c_url`&sort_by=code&sort_order=`$search.sort_order_rev`"|fn_url}" data-ca-target-id={$rev}>{__("sku")}{if $search.sort_by === "code"}{$c_icon nofilter}{else}{$c_dummy nofilter}{/if}</a></th>
+
+                <th><a class="cm-ajax" href="{"`$c_url`&sort_by=product&sort_order=`$search.sort_order_rev`"|fn_url}" data-ca-target-id={$rev}>{__("name")}{if $search.sort_by === "product"}{$c_icon nofilter}{else}{$c_dummy nofilter}{/if}</a> </th>
+
                 <th width="13%"><a class="cm-ajax" href="{"`$c_url`&sort_by=price&sort_order=`$search.sort_order_rev`"|fn_url}" data-ca-target-id={$rev}>{__("price")} ({$currencies.$primary_currency.symbol nofilter}){if $search.sort_by === "price"}{$c_icon nofilter}{else}{$c_dummy nofilter}{/if}</a></th>
                 {if $show_list_price_column}
                 <th width="12%" class="mobile-hide"><a class="cm-ajax" href="{"`$c_url`&sort_by=list_price&sort_order=`$search.sort_order_rev`"|fn_url}" data-ca-target-id={$rev}>{__("list_price")} ({$currencies.$primary_currency.symbol nofilter}){if $search.sort_by === "list_price"}{$c_icon nofilter}{else}{$c_dummy nofilter}{/if}</a></th>
@@ -189,7 +193,9 @@
         </div>
     {/capture}
 
-    {include file="common/context_menu_wrapper.tpl"
+
+    {include file="common/context_menu_wrapper.tpl" 
+
         form="manage_products_form"
         object="products"
         items=$smarty.capture.products_table
